@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smash command reference</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>smash command reference</h1>
+        
+        <nav class="nav">
+            <a href="index.html">Dashboard</a>
+            <a href="help.html">Command Reference</a>
+            <a href="log.html">Logs</a>
+        </nav>
+
+        <p>
+            All commands are sent via SMS from a <strong>target</strong> phone to the smash phone.
+            Commands start with a prefix (default: <code>Cmd</code>) followed by the command name and arguments.
+        </p>
+
+        <h2>Quick Reference</h2>
+        <pre><code>Cmd help
+Cmd list [prefix|endpoints|targets|aliases|blocked]
+Cmd add &lt;target&gt;
+Cmd remove &lt;target&gt;
+Cmd alias &lt;name&gt; &lt;number&gt; | remove
+Cmd ban [list] | ban &lt;number&gt; | ban remove &lt;number&gt;
+Cmd prefix &lt;new&gt;
+Cmd endpoint email|log &lt;url&gt | disable;
+Cmd send &lt;name_or_number&gt; &lt;text message&gt;
+Cmd log [n|trim]
+Cmd emaillog &lt;address&gt;
+Cmd verbose 0|1
+Cmd testmms &lt;number&gt;</code></pre>
+
+        <h2>Target Management</h2>
+        <p>Targets are phone numbers that receive forwarded messages and can send commands.</p>
+
+        <div class="cmd">
+            <h3>add</h3>
+            <p>Add a phone number as a forwarding target.</p>
+            <div class="syntax">Cmd add &lt;phone_number&gt;</div>
+            <p class="example">Cmd add +15551234567</p>
+            <p>
+                <strong>Replies:</strong> <code>added</code>, <code>exists</code> (already a target), 
+                or <code>persist failed</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>remove</h3>
+            <p>Remove a phone number from the target list.</p>
+            <div class="syntax">Cmd remove &lt;phone_number&gt;</div>
+            <p class="example">Cmd remove +15551234567</p>
+            <p>
+                <strong>Replies:</strong> <code>removed</code> or <code>not found</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>list targets</h3>
+            <p>Show all current forwarding targets.</p>
+            <div class="syntax">Cmd list targets</div>
+            <p>Returns a list of phone numbers, one per line, or <code>(none)</code> if empty.</p>
+        </div>
+
+        <h2>Aliases</h2>
+        <p>Aliases let you use friendly names instead of phone numbers with the <code>send</code> command.</p>
+
+        <div class="cmd">
+            <h3>alias (create/update)</h3>
+            <p>Create or update an alias for a phone number.</p>
+            <div class="syntax">Cmd alias &lt;name&gt; &lt;phone_number&gt;</div>
+            <p class="example">Cmd alias john +15551234567</p>
+            <p>
+                <strong>Replies:</strong> <code>alias set: john=+15551234567</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>alias (remove)</h3>
+            <p>Remove an existing alias.</p>
+            <div class="syntax">Cmd alias &lt;name&gt; remove</div>
+            <p class="example">Cmd alias john remove</p>
+            <p>
+                <strong>Replies:</strong> <code>alias removed: john</code> or <code>not found</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>list aliases</h3>
+            <p>Show all configured aliases.</p>
+            <div class="syntax">Cmd list aliases</div>
+            <p>Returns aliases in <code>name=number</code> format, one per line.</p>
+        </div>
+
+        <h2>Sending Messages</h2>
+
+        <div class="cmd">
+            <h3>send</h3>
+            <p>Send an SMS from the smash phone to any number.</p>
+            <div class="syntax">Cmd send &lt;recipient&gt; &lt;message&gt;</div>
+            <p class="example">Cmd send +15551234567 Hello, this is a test message</p>
+            <p class="example">Cmd send john Are you available tomorrow?</p>
+            <p>
+                The recipient can be a phone number or an alias name.
+            </p>
+            <p>
+                <strong>Replies:</strong> <code>sent</code> or <code>failed</code>
+            </p>
+        </div>
+
+        <h2>Blocking Numbers</h2>
+        <p>Block spam numbers at the system level. Blocked numbers won't be forwarded.</p>
+
+        <div class="cmd">
+            <h3>ban (block)</h3>
+            <p>Block a phone number.</p>
+            <div class="syntax">Cmd ban &lt;phone_number&gt;</div>
+            <p class="example">Cmd ban +15559876543</p>
+            <p>
+                <strong>Replies:</strong> <code>blocked</code>, <code>already blocked</code>, 
+                or <code>no access</code> (if not default SMS app)
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>ban remove</h3>
+            <p>Unblock a previously blocked number.</p>
+            <div class="syntax">Cmd ban remove &lt;phone_number&gt;</div>
+            <p class="example">Cmd ban remove +15559876543</p>
+            <p>
+                <strong>Replies:</strong> <code>unblocked</code> or <code>not found</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>ban list / list blocked</h3>
+            <p>Show blocked numbers (most recent 10).</p>
+            <div class="syntax">Cmd ban list</div>
+            <div class="syntax">Cmd list blocked</div>
+            <p>Both commands show the same information.</p>
+        </div>
+
+        <h2>Endpoints</h2>
+        <p>Configure AWS Lambda endpoints for email forwarding and log upload.</p>
+
+        <div class="cmd">
+            <h3>endpoint email</h3>
+            <p>Configure the email forwarding endpoint URL.</p>
+            <div class="syntax">Cmd endpoint email &lt;url&gt;</div>
+            <p class="example">Cmd endpoint email https://abc123.execute-api.us-west-2.amazonaws.com/smash-email-forwarder</p>
+            <p>
+                <strong>Replies:</strong> <code>email endpoint set</code> or <code>invalid url</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>endpoint log</h3>
+            <p>Configure the log upload endpoint URL.</p>
+            <div class="syntax">Cmd endpoint log &lt;url&gt;</div>
+            <p class="example">Cmd endpoint log https://def456.execute-api.us-west-2.amazonaws.com/smash-log-receiver</p>
+            <p>
+                <strong>Replies:</strong> <code>log endpoint set</code> or <code>invalid url</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>endpoint disable</h3>
+            <p>Disable an endpoint.</p>
+            <div class="syntax">Cmd endpoint email disable</div>
+            <div class="syntax">Cmd endpoint log disable</div>
+            <p>
+                <strong>Replies:</strong> <code>email endpoint disabled</code> or <code>log endpoint disabled</code>
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>list endpoint</h3>
+            <p>Show the current endpoint URLs.</p>
+            <div class="syntax">Cmd list endpoint</div>
+        </div>
+
+        <div class="cmd">
+            <h3>emaillog</h3>
+            <p>Email the recent log to a specific address (useful for debugging).</p>
+            <div class="syntax">Cmd emaillog &lt;email_address&gt;</div>
+            <p class="example">Cmd emaillog debug@example.com</p>
+        </div>
+
+        <h2>Configuration</h2>
+
+        <div class="cmd">
+            <h3>prefix</h3>
+            <p>Change the command prefix (default is <code>Cmd</code>).</p>
+            <div class="syntax">Cmd prefix &lt;new_prefix&gt;</div>
+            <p class="example">Cmd prefix Smash</p>
+            <p>
+                After changing, use the new prefix for all commands: <code>Smash help</code>
+            </p>
+            <div class="note">
+                Remember your new prefix! If you forget it, you'll need to reinstall the app.
+            </div>
+        </div>
+
+        <div class="cmd">
+            <h3>list prefix</h3>
+            <p>Show the current command prefix.</p>
+            <div class="syntax">Cmd list prefix</div>
+        </div>
+
+        <div class="cmd">
+            <h3>verbose</h3>
+            <p>Enable or disable verbose logging.</p>
+            <div class="syntax">Cmd verbose 0|1</div>
+            <p class="example">Cmd verbose 1</p>
+            <p>
+                When enabled, more detailed logs are captured for debugging.
+            </p>
+        </div>
+
+        <h2>Logging & Debugging</h2>
+
+        <div class="cmd">
+            <h3>log</h3>
+            <p>View recent log entries.</p>
+            <div class="syntax">Cmd log [count]</div>
+            <p class="example">Cmd log</p>
+            <p class="example">Cmd log 20</p>
+            <p>
+                Returns the most recent log entries (default: 10). Logs are split across 
+                multiple SMS messages if needed.
+            </p>
+        </div>
+
+        <div class="cmd">
+            <h3>log trim</h3>
+            <p>Clear old log entries.</p>
+            <div class="syntax">Cmd log trim</div>
+        </div>
+
+        <div class="cmd">
+            <h3>testmms</h3>
+            <p>Send a test MMS to verify MMS functionality.</p>
+            <div class="syntax">Cmd testmms &lt;phone_number&gt;</div>
+            <p class="example">Cmd testmms +15551234567</p>
+            <p>
+                Sends a test MMS with a small image to the specified number.
+            </p>
+        </div>
+
+        <h2>Viewing All Settings</h2>
+
+        <div class="cmd">
+            <h3>list</h3>
+            <p>Without arguments, shows available list options.</p>
+            <div class="syntax">Cmd list</div>
+            <table>
+                <tr>
+                    <th>Option</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>prefix</code></td>
+                    <td>Current command prefix</td>
+                </tr>
+                <tr>
+                    <td><code>endpoint</code></td>
+                    <td>Email and log endpoint URLs</td>
+                </tr>
+                <tr>
+                    <td><code>targets</code></td>
+                    <td>Forwarding phone numbers</td>
+                </tr>
+                <tr>
+                    <td><code>aliases</code></td>
+                    <td>Name-to-number mappings</td>
+                </tr>
+                <tr>
+                    <td><code>blocked</code></td>
+                    <td>Blocked/banned numbers</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Tips & Best Practices</h2>
+        <ul>
+            <li>Always include the country code in phone numbers: <code>+1</code> for US/Canada</li>
+            <li>Add yourself as the first target immediately after setup</li>
+            <li>Set up email forwarding for a searchable archive of all messages</li>
+            <li>Use aliases for frequent contacts to make <code>send</code> commands easier</li>
+            <li>Check <code>Cmd log</code> if messages aren't being forwarded</li>
+        </ul>
+
+        <div class="note">
+            smash must be set as the default SMS app on the phone to receive messages.
+            The phone's original SMS app will NOT receive messages while smash is default.
+        </div>
+    </div>
+</body>
+</html>

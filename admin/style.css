@@ -1,0 +1,187 @@
+/* React-style theme */
+:root {
+    --bg: #282c34;
+    --text: #ffffff;
+    --text-muted: #abb2bf;
+    --accent: #61dafb;
+    --accent-dark: #21a1c4;
+    --card-bg: #3a3f4b;
+    --border: #4a5568;
+    --success: #98c379;
+    --warning: #e5c07b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: var(--accent);
+    margin-top: 40px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 5px;
+}
+
+h3 {
+    color: var(--text);
+    margin-top: 25px;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.nav a {
+    padding: 10px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    color: var(--accent);
+}
+
+.nav a:hover {
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    border-left: 4px solid var(--accent);
+}
+
+.card h2 {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Code */
+code {
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    color: var(--accent);
+}
+
+pre {
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Command blocks */
+.cmd {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    border-left: 4px solid var(--accent);
+}
+
+.cmd h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.cmd .syntax {
+    background: var(--bg);
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    color: var(--accent);
+}
+
+.cmd .example {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.cmd .example::before {
+    content: "Example: ";
+    color: var(--success);
+    font-style: normal;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+th {
+    color: var(--accent);
+}
+
+/* Notes/warnings */
+.note {
+    background: var(--card-bg);
+    border-left: 4px solid var(--warning);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.note::before {
+    content: "⚠️ ";
+}
+
+/* Lists */
+ul, ol {
+    padding-left: 25px;
+}
+
+li {
+    margin: 8px 0;
+}

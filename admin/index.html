@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smash admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>smash admin</h1>
+        
+        <nav class="nav">
+            <a href="index.html">Dashboard</a>
+            <a href="help.html">Command Reference</a>
+            <a href="log.html">Logs</a>
+        </nav>
+
+        <div class="card">
+            <h2>What is smash?</h2>
+            <p>
+                <strong>smash</strong> (SMS Aggregation & Sharing Hub) is an Android app that forwards 
+                SMS and MMS messages from a dedicated phone to your email and/or other phone numbers.
+            </p>
+            <p>
+                Perfect for managing a shared phone number (like a property management line) where 
+                multiple people need to see and respond to messages.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Quick Start</h2>
+            <ol>
+                <li>Install smash on an Android phone</li>
+                <li>Grant all permissions when prompted</li>
+                <li>Set smash as the default SMS app</li>
+                <li>Add yourself as a target: <code>Cmd add +15551234567</code></li>
+                <li>Configure email forwarding: <code>Cmd setmail https://your-endpoint.com</code></li>
+            </ol>
+            <p>See the <a href="help.html">full command reference</a> for all options.</p>
+        </div>
+
+        <div class="card">
+            <h2>How It Works</h2>
+            <p>When someone texts the smash phone:</p>
+            <ul>
+                <li>The message is forwarded to all configured <strong>targets</strong> (phone numbers)</li>
+                <li>If email is configured, a copy is sent to your inbox</li>
+                <li>Targets can reply directly - smash will forward the reply back to the original sender</li>
+            </ul>
+            <p>
+                You control smash by sending SMS commands from a target phone. 
+                Commands start with a prefix (default: <code>Cmd</code>).
+            </p>
+        </div>
+    </div>
+</body>
+</html>
